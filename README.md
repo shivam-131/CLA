@@ -5,3 +5,4 @@ https://arxiv.org/pdf/1512.05463.pdf
 Data Source: https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page
 
 The data I used is Yellow Taxi Trip data from the January 1st, 2020 to January 31st, 2020.
+I have each day into 48 slots of 30 mminutes each. And the proecessed csv has been uploaded here.
