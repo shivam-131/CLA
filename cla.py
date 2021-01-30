@@ -1,21 +1,21 @@
 import pandas as pd
 import numpy as np
 import datetime
-
+from nupic.encoders.multi import MultiEncoder
+from nupic.algorithms.spatial_pooler import SpatialPooler
+from nupic.algorithms.temporal_memory import TemporalMemory
 df= pd.read_csv('~/Desktop/Passenger.csv', names= ["Values"])
 def softmax(X):
     expo = np.exp(X)
     expo_sum = np.sum(np.exp(X))
     return expo/expo_sum
-min=364
-max=13512
-# for i in range(1488):
-#     if df["Values"][i]<min:
-#         min= df["Values"][i]
-#d     if df['Values'][i]>max:
-#         max= df["Values"][i]
-# print(min, max)
-from nupic.encoders.multi import MultiEncoder
+for i in range(1488):
+    if df["Values"][i]<min:
+        min= df["Values"][i]
+    if df['Values'][i]>max:
+        max= df["Values"][i]
+print(min, max)
+
 
 encoder= MultiEncoder()
 encoder.addMultipleEncoders(fieldEncodings= {
@@ -31,7 +31,7 @@ while start_date <= end_date:
     encoded_data.append(encoder.encode({'dateTime': start_date, 'passengers': df["Values"][i],}))
     start_date += delta
     i=i+1
-from nupic.algorithms.spatial_pooler import SpatialPooler
+
 sp= SpatialPooler(inputDimensions=(1524,), columnDimensions=(2048, ))
 sdr= []
 for j in range(len(encoded_data)):
@@ -39,7 +39,7 @@ for j in range(len(encoded_data)):
     sp.compute(encoded_data[j], learn= True, activeArray= d)
     sdr.append(d)
 print(len(sdr))
-from nupic.algorithms.temporal_memory import TemporalMemory
+
 
 tm= TemporalMemory(columnDimensions=(2048,), cellsPerColumn=32, activationThreshold=15, initialPermanence=0.21, connectedPermanence=0.5, maxSegmentsPerCell=128, maxSynapsesPerSegment=128, maxNewSynapseCount=32)
 likelihood=0
@@ -53,7 +53,7 @@ for time in range(len(sdr)-1):
     thisSet= set()
     for cell in predicted_cells:
         thisSet.add(int(cell/(32)))
-    #INVERSE SQUARE PERCENTAGE ERROR
+    #MEAN SQUARE ERROR
     y= np.full((2048, ), 0)
     for x in thisSet:
         y[x]= 1
