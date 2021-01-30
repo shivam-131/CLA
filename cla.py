@@ -63,4 +63,4 @@ for time in range(len(sdr)-1):
     if time>0:
         prob= softmax(y)
         likelihood= (np.log(np.dot(prob, sdr[time+1])) + (time)*likelihood)/(time+1)
-        #print(likelihood)
+        print(likelihood)
