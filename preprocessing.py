@@ -1,5 +1,5 @@
 import pandas as pd 
-df= pd.read_csv('~/Downloads/yellow_tripdata_2020-01.csv')
+df= pd.read_csv('/Data/yellow_tripdata_2020-01.csv')
 df= df.dropna()
 passenger_count= []
 for i in range(31*48):
